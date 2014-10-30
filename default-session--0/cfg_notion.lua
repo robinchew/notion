@@ -16,11 +16,12 @@
 -- Set default modifiers. Alt should usually be mapped to Mod1 on
 -- XFree86-based systems. The flying window keys are probably Mod3
 -- or Mod4; see the output of 'xmodmap'.
---META="Mod1+"
+META="Mod1+"
 --ALTMETA=""
+CTRLALT="Mod1+Control+"
 
 -- Terminal emulator
---XTERM="xterm"
+XTERM="xfce4-terminal"
 
 -- Some basic settings
 ioncore.set{
@@ -112,3 +113,30 @@ dopath("cfg_defaults")
 --    kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
 --})
 
+dopath("wrap_workspace_or_screen")
+
+--ioncore.exec('xbacklight -set 1')
+ioncore.exec('trayion')
+--ioncore.exec('kmix')
+--[[
+ioncore.exec('chromium')
+ioncore.exec('xfce4-terminal')
+ioncore.exec('xfce4-clipman')
+--ioncore.exec('amixer set PCM 100%')
+--ioncore.exec('amixer set "Wave Surround" 80%')
+--ioncore.exec('volumeicon')
+--ioncore.exec('xfce4-clipman')
+--ioncore.exec('pidgin')
+--ioncore.exec('xfce4-terminal -x bash -c "cd /home/robin/work/bookings/;bash"')
+--ioncore.exec('xfce4-terminal -x bash -c "cd /home/robin/work;python manage.py tlmp runserver"')
+--ioncore.exec('chromium http://localhost:8000/?time=2013-02-05+02.15')
+--ioncore.exec('chromium file:///home/robin/work/bookings/static/test.html')
+--dopath("goto_multihead")
+
+ioncore.exec('xfce4-terminal -e "sh -c \'~/backup/gitbackup;read\'"')
+ioncore.exec('xfce4-terminal -e "sh -c \'rsync -avu user@192.168.0.12:MyDocs/DCIM/ ~/backup/DCIM;read\'"')
+ioncore.exec('xfce4-terminal -e "sh -c \'rsync -avu user@192.168.0.12:MyDocs/.CallRecorder/ ~/backup/CallRecorder;read\'"')
+ioncore.exec('xfce4-terminal -e "bash -c \'cd ~/work/lightcube/;./assimilate.sh test --failall;read\'"')
+ioncore.exec('xfce4-terminal -e "sh -c ~/linux/bin/timer;read"')
+ioncore.exec('xfce4-terminal -e "sh -c ~/linux/bin/backup_talk.sh;read"')
+--]]

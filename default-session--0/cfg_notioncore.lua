@@ -32,6 +32,12 @@ defbindings("WScreen", {
     kpress(META.."8", "WScreen.switch_nth(_, 7)"),
     kpress(META.."9", "WScreen.switch_nth(_, 8)"),
     kpress(META.."0", "WScreen.switch_nth(_, 9)"),
+
+    -- Multi screen tiling
+    kpress(META.."o", "wrap_wsscr.goto_next(_chld, 'left')", "_chld:non-nil"),
+    kpress(META.."u", "wrap_wsscr.goto_next(_chld, 'right')", "_chld:non-nil"),
+
+    --
     
     bdoc("Switch to next/previous object within current screen."),
     kpress(META.."comma", "WScreen.switch_prev(_)"),
@@ -55,20 +61,14 @@ defbindings("WScreen", {
 
     bdoc("Go to n:th screen on multihead setup."),
     kpress(META.."Shift+1", "ioncore.goto_nth_screen(0)"),
-    kpress(META.."Q", "ioncore.goto_nth_screen(0)"),
     kpress(META.."Shift+2", "ioncore.goto_nth_screen(1)"),
-    kpress(META.."W", "ioncore.goto_nth_screen(1)"),
-    kpress(META.."Shift+3", "ioncore.goto_nth_screen(2)"),
-    kpress(META.."E", "ioncore.goto_nth_screen(2)"),
     
     bdoc("Go to next/previous screen on multihead setup."),
     kpress(META.."Shift+comma", "ioncore.goto_prev_screen()"),
-    kpress(META.."I", "ioncore.goto_prev_screen()"),
-    kpress(META.."O", "ioncore.goto_next_screen()"),
-    kpress(META.."grave", "ioncore.goto_next_screen()"),
+    kpress(META.."Shift+period", "ioncore.goto_next_screen()"),
     
     bdoc("Create a new workspace of chosen default type."),
-    kpress(META.."F9", "ioncore.create_ws(_)"),
+    kpress("F9", "ioncore.create_ws(_)"),
     
     bdoc("Display the main menu."),
     kpress(ALTMETA.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
@@ -96,6 +96,11 @@ defbindings("WScreen", {
                "_chld:non-nil"),
     }),
 
+    --kpress(META.."o", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
+    --kpress(META.."u", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(META.."period", "ioncore.goto_next(_chld, 'top')", "_chld:non-nil"),
+    kpress(META.."e", "ioncore.goto_next(_chld, 'bottom')", "_chld:non-nil"),
+
 })
 
 
@@ -104,11 +109,11 @@ defbindings("WScreen", {
 -- These bindings affect client windows directly.
 
 defbindings("WClientWin", {
-    submap(META.."K", {
-       bdoc("Nudge the client window. This might help with some "..
+    bdoc("Nudge the client window. This might help with some "..
          "programs' resizing problems."),
-       kpress_wait(META.."L", "WClientWin.nudge(_)"),
-
+    kpress_wait(META.."L", "WClientWin.nudge(_)"),
+    
+    submap(META.."K", {
        bdoc("Kill client owning the client window."),
        kpress("C", "WClientWin.kill(_)"),
        
@@ -134,7 +139,7 @@ defbindings("WGroupCW", {
 
 defbindings("WMPlex", {
     bdoc("Close current object."),
-    kpress_wait(META.."C", "WRegion.rqclose_propagate(_, _sub)"),
+    kpress_wait(META.."q", "WRegion.rqclose_propagate(_, _sub)"),
 })
 
 -- Frames for transient windows ignore this bindmap
@@ -142,37 +147,42 @@ defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object."),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
 
-    bdoc("Lock screen"),
-    kpress(META.."L", "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
-    
-    bdoc("Query for manual page to be displayed."),
-    kpress(ALTMETA.."F1", "mod_query.query_man(_, ':man')"),
+    -- MPC & Cantata
 
-    bdoc("Show the Notion manual page."),
-    kpress(META.."F1", "ioncore.exec_on(_, ':man notion')"),
+    bdoc("MPC Play/Pause"),
+    kpress("Mod4+p", "ioncore.exec_on(_, 'mpc toggle')"),
+
+    bdoc("MPC Next"),
+    kpress("Mod4+period", "ioncore.exec_on(_, 'mpc next')"),
+
+    bdoc("MPC Prev"),
+    kpress("Mod4+comma", "ioncore.exec_on(_, 'mpc prev')"),
+
+    bdoc("MPC Replay"),
+    kpress("Mod4+Shift+p", "ioncore.exec_on(_, 'mpc stop && mpc play')"),
+
+    bdoc("Cantata stop after current track"),
+    kpress("Mod4+o", "ioncore.exec_on(_, 'dbus-send --dest=org.mpris.MediaPlayer2.cantata --type=method_call /cantata/MainWindow_1 com.googlecode.cantata.MainWindow.stopAfterCurrentTrack')"),
+
+    --
 
     bdoc("Run a terminal emulator."),
-    kpress(ALTMETA.."F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
+    kpress(CTRLALT.."t", "ioncore.exec_on(_, XTERM or 'xterm')"),
+
+    bdoc("Run a terminal emulator."),
+    kpress(CTRLALT.."Shift+t", "ioncore.exec_on(_, 'konsole')"),
+
+    bdoc("Run Clipman."),
+    kpress(CTRLALT.."v", "ioncore.exec_on(_, 'xfce4-popup-clipman')"),
+
+    bdoc("Screenshot."),
+    kpress("Print", "ioncore.exec_on(_, 'xfce4-screenshooter')"),
     
     bdoc("Query for command line to execute."),
-    kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),
+    kpress(META.."F2", "mod_query.query_exec(_)"),
 
     bdoc("Query for Lua code to execute."),
     kpress(META.."F3", "mod_query.query_lua(_)"),
-
-    bdoc("Query for host to connect to with SSH."),
-    kpress(ALTMETA.."F4", "mod_query.query_ssh(_, ':ssh')"),
-
-    bdoc("Query for file to edit."),
-    kpress(ALTMETA.."F5", 
-           "mod_query.query_editfile(_, 'run-mailcap --action=edit')"),
-
-    bdoc("Query for file to view."),
-    kpress(ALTMETA.."F6", 
-           "mod_query.query_runfile(_, 'run-mailcap --action=view')"),
-
-    bdoc("Query for workspace to go to or create a new one."),
-    kpress(ALTMETA.."F9", "mod_query.query_workspace(_)"),
     
     bdoc("Query for a client window to go to."),
     kpress(META.."G", "mod_query.query_gotoclient(_)"),
@@ -188,6 +198,12 @@ defbindings("WMPlex.toplevel", {
         -- (_chld) is a group 'bottom' and detaches the whole group in that
         -- case.
         kpress("D", "ioncore.detach(_chld, 'toggle')", "_chld:non-nil"),
+    }),
+    kpress(META.."m", "ioncore.detach(_chld, 'toggle')", "_chld:non-nil"),
+
+    submap(META.."c", {
+        kpress("1", "ioncore.exec_on(_, 'google-chrome  --profile-directory=\"Profile 2\"')"),
+        kpress("2", "ioncore.exec_on(_, 'google-chrome  --profile-directory=\"Profile 3\"')"),
     }),
 })
 
@@ -225,16 +241,13 @@ defbindings("WFrame", {
     mdrag("Button1@tab", "WFrame.p_tabdrag(_)"),
     mdrag("Button2@tab", "WFrame.p_tabdrag(_)"),
            
-    bdoc("Switch to next/previous object within the frame."),
-    mclick(META.."Button4", "WFrame.switch_next(_)"), 
-    mclick(META.."Button5", "WFrame.switch_prev(_)"),
 })
 
 -- Frames for transient windows ignore this bindmap
 
 defbindings("WFrame.toplevel", {
-    bdoc("Query for a client window to attach."),
-    kpress(META.."A", "mod_query.query_attachclient(_)"),
+    --bdoc("Query for a client window to attach."),
+    --kpress(META.."A", "mod_query.query_attachclient(_)"),
     
     submap(META.."K", {
         -- Display tab numbers when modifiers are released
@@ -267,6 +280,15 @@ defbindings("WFrame.toplevel", {
         bdoc("Attach tagged objects to this frame."),
         kpress("A", "ioncore.tagged_attach(_)"),
     }),
+    kpress(META.."Shift+t", "ioncore.tagged_attach(_)"),
+
+    bdoc("Switch to next/previous object within current screen."),
+    kpress(META.."p", "WFrame.switch_next(_)"),
+    kpress(META.."comma", "WFrame.switch_prev(_)"),
+
+    bdoc("Move current object within the frame left/right."),
+    kpress(META.."Shift+comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
+    kpress(META.."Shift+p", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
 })
 
 -- Bindings for floating frames.
@@ -341,9 +363,8 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
-    menuentry("Terminal",       "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
-    menuentry("Lock screen",    
-        "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
+    menuentry("Terminal",       "ioncore.exec_on(_, XTERM or 'xterm')"),
+    menuentry("Lock screen",    "ioncore.exec_on(_, 'xlock')"),
     menuentry("Help",           "mod_query.query_man(_)"),
     menuentry("About Notion",      "mod_query.show_about_ion(_)"),
     submenu("Styles",           "stylemenu"),
