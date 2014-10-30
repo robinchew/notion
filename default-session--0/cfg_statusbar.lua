@@ -6,7 +6,7 @@
 -- Create a statusbar
 mod_statusbar.create{
     -- First screen, bottom left corner
-    screen=0,
+    screen=2,
     pos='bl',
     -- Set this to true if you want a full-width statusbar
     fullsize=false,
