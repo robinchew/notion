@@ -1,3 +1,44 @@
+defwinprop{
+    class = "Xfce-terminal",
+    target = 'ws2a',
+    oneshot = true,
+}
+
+defwinprop{
+    class = "Chromium",
+    instance = 'chromium',
+    target = 'ws1a',
+    oneshot = true,
+}
+
+defwinprop{
+    class = "Pidgin",
+    target = 'ws3a',
+}
+
+defwinprop{
+    class = "cantata",
+    target = 'ws3a',
+}
+
+defwinprop{
+    --name = "Untitled",
+    target = 'ws3c',
+    --switchto = false,
+
+    match = function(prop, cwin, winattrs)
+        ioncore.exec('echo "|+'.. winattrs.instance .. '|" >> ~/t.txt')
+        return string.find(winattrs.instance, 'chromium%-browser %(/tmp') ~= nil
+    end
+
+}
+
+-- Open Pale Moon browser window in background
+defwinprop{
+    class = "Pale moon",
+    switchto = false,
+}
+
 --
 -- Options to get some programs work more nicely (or at all)
 --
@@ -16,11 +57,27 @@ defwinprop{
     ignore_cfgrq = true,
 }
 
+-- Floating windows
+--
+defwinprop{
+    class = "Xfce4-screenshooter",
+    float = true,
+}
+
+--defwinprop{
+--    name = 'Copying',
+--    float = true,
+--}
+
+defwinprop{
+    name = 'Moving',
+    float = true,
+}
+
 -- Better would be to apply these settings automatically whenever a window
 -- has type _NET_WM_WINDOW_TYPE_NOTIFICATION
 defwinprop{
         class = "Xfce4-notifyd",
-
         float = true,
         userpos = true,
         switchto = false,
@@ -47,6 +104,11 @@ defwinprop{
     class = "Gimp", 
     acrobatic = true,
 }
+defwinprop{ 
+    class = "Gimp-2.8", 
+    acrobatic = true,
+}
+
 
 -- You might want to enable these if you really must use XMMS. 
 --[[
