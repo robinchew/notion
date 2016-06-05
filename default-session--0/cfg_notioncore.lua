@@ -147,6 +147,17 @@ defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object."),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
 
+    -- Volume
+
+    bdoc("Volume Up"),
+    kpress("XF86AudioRaiseVolume", "ioncore.exec_on(_, 'amixer set PCM 5%+')"),
+
+    bdoc("Volume Down"),
+    kpress("XF86AudioLowerVolume", "ioncore.exec_on(_, 'amixer set PCM 5%-')"),
+
+    bdoc("Volume Mute"),
+    kpress("XF86AudioMute", "ioncore.exec_on(_, 'amixer set Master toggle')"),
+
     -- MPC & Cantata
 
     bdoc("MPC Play/Pause"),
@@ -162,7 +173,7 @@ defbindings("WMPlex.toplevel", {
     kpress("Mod4+Shift+p", "ioncore.exec_on(_, 'mpc stop && mpc play')"),
 
     bdoc("Cantata stop after current track"),
-    kpress("Mod4+o", "ioncore.exec_on(_, 'dbus-send --dest=org.mpris.MediaPlayer2.cantata --type=method_call /cantata/MainWindow_1 com.googlecode.cantata.MainWindow.stopAfterCurrentTrack')"),
+    kpress("Mod4+o", "ioncore.exec_on(_, 'dbus-send --dest=org.mpris.MediaPlayer2.cantata --type=method_call /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.StopAfterCurrent')"),
 
     --
 
@@ -170,7 +181,7 @@ defbindings("WMPlex.toplevel", {
     kpress(CTRLALT.."t", "ioncore.exec_on(_, XTERM or 'xterm')"),
 
     bdoc("Run a terminal emulator."),
-    kpress(CTRLALT.."Shift+t", "ioncore.exec_on(_, 'konsole')"),
+    kpress(CTRLALT.."Shift+t", "ioncore.exec_on(_, 'lxterminal')"),
 
     bdoc("Run Clipman."),
     kpress(CTRLALT.."v", "ioncore.exec_on(_, 'xfce4-popup-clipman')"),
