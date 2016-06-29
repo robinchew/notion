@@ -132,6 +132,7 @@ defwinprop{
 -- rule that succeeds in making the title short enough is used.
 ioncore.defshortening("Terminal - ([^ ]*) \\(.*/([^/]+)\\) - VIM", "$2/$1", true)
 ioncore.defshortening("(.{0,20}).* - Chromium", "$1", true)
+ioncore.defshortening("Terminal - .*[/:]([^/]+/[^/]+)$", "$1", true)
 --[[
 ioncore.defshortening("(.*) - Mozilla(<[0-9]+>)", "$1$2$|$1$<...$2")
 ioncore.defshortening("(.*) - Mozilla", "$1$|$1$<...")
