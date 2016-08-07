@@ -27,7 +27,7 @@ defwinprop{
     --switchto = false,
 
     match = function(prop, cwin, winattrs)
-        ioncore.exec('echo "|+'.. winattrs.instance .. '|" >> ~/t.txt')
+        --ioncore.exec('echo "|+'.. winattrs.instance .. '|" >> ~/t.txt')
         return string.find(winattrs.instance, 'chromium%-browser %(/tmp') ~= nil
     end
 
@@ -130,8 +130,9 @@ defwinprop{
 -- Define some additional title shortening rules to use when the full
 -- title doesn't fit in the available space. The first-defined matching
 -- rule that succeeds in making the title short enough is used.
-ioncore.defshortening("Terminal - ([^ ]*) \\(.*/([^/ ]+)\\)", "$2/$1", true)
-ioncore.defshortening("Terminal - .*[/:]([^/]+/[^/]+)$", "$1", true)
+ioncore.defshortening("^Terminal - ([^ ]*) \\+ \\(.*/([^/ ]+)\\)", "{+} $2/$1", true)
+ioncore.defshortening("^Terminal - ([^ ]*) \\(.*/([^/ ]+)\\)", "{} $2/$1", true)
+ioncore.defshortening("^Terminal - .*[/:]([^/]+/[^/]+)$", "$1", true)
 ioncore.defshortening("(.{0,20}).* - Chromium", "$1", true)
 --[[
 ioncore.defshortening("(.*) - Mozilla(<[0-9]+>)", "$1$2$|$1$<...$2")
