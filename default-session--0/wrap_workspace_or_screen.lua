@@ -58,6 +58,9 @@ function wrap_wsscr.goto_next(region, direction, param)
             local reg=ioncore.navi_first(underlying_manager(screen:current()), 'left')
             --if reg then reg:goto() end
         elseif direction=='up' then
+            local screen=ioncore.goto_next_screen()
+            local reg=ioncore.navi_first(underlying_manager(screen:current()), 'up')
+            --[[
             local screen=workspace:screen_of()
             local ws=underlying_manager(prev_ws(screen))
             --For floating workspaces, ioncore.navi_first only seems to work 
@@ -66,7 +69,11 @@ function wrap_wsscr.goto_next(region, direction, param)
             --ws:goto()
             local reg=ioncore.navi_first(ws, 'down', {no_ascend=ws,})
             --if reg then reg:goto() end
+            --]]
         elseif direction=='down' then
+            local screen=ioncore.goto_next_screen()
+            local reg=ioncore.navi_first(underlying_manager(screen:current()), 'down')
+            --[[
             local screen=workspace:screen_of()
             local ws=underlying_manager(next_ws(screen))
             --For floating workspaces, ioncore.navi_first only seems to work 
@@ -75,6 +82,7 @@ function wrap_wsscr.goto_next(region, direction, param)
             --ws:goto()
             local reg=ioncore.navi_first(ws, 'up', {no_ascend=ws,})
             --if reg then reg:goto() end
+            --]]
         end
     end
 end
